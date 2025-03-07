@@ -1,10 +1,7 @@
 package com.aspi.restauranteapi.service;
 
 import com.aspi.restauranteapi.config.JwtTokenProvider;
-import com.aspi.restauranteapi.dto.DisponibilidadDTO;
-import com.aspi.restauranteapi.dto.HorarioDTO;
-import com.aspi.restauranteapi.dto.MesaDTO;
-import com.aspi.restauranteapi.dto.ReservaDTO;
+import com.aspi.restauranteapi.dto.*;
 import com.aspi.restauranteapi.entity.Cliente;
 import com.aspi.restauranteapi.entity.Mesa;
 import com.aspi.restauranteapi.entity.Reserva;
@@ -88,14 +85,18 @@ public class ReservaService {
         ReservaDTO reserva = reservaRepository.findAllDTO(id);
         return reserva;
     }
-    public ResponseEntity<Reserva> save(Reserva reserva, String token) {
+    public ResponseEntity<Reserva> save(ReservaDTOCliente reservaDTOCliente, String token) {
+        Reserva reserva = new Reserva();
         String username = jwtTokenProvider.getUsernameFromToken(token.replace("Bearer ", ""));
         UserEntity userEntity = userEntityRepository.findByUsername(username).get();
         Cliente cliente = clienteRepository.findByName(userEntity.getUsername())
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
-
+        Mesa mesa = mesaRepository.findById(reservaDTOCliente.getMesaId()).get();
         reserva.setCliente(cliente);
-        System.out.println(reserva.getMesa());
+        reserva.setMesa(mesa);
+        reserva.setPeople(reservaDTOCliente.getPeople());
+        reserva.setBookingDate(reservaDTOCliente.getBookingDate());
+        reserva.setBookingTime(reservaDTOCliente.getBookingTime());
         Reserva reservaSaved = reservaRepository.save(reserva);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(reservaSaved);

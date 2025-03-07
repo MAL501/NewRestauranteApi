@@ -2,6 +2,7 @@ package com.aspi.restauranteapi.controller;
 
 import com.aspi.restauranteapi.dto.DisponibilidadDTO;
 import com.aspi.restauranteapi.dto.ReservaDTO;
+import com.aspi.restauranteapi.dto.ReservaDTOCliente;
 import com.aspi.restauranteapi.entity.Reserva;
 import com.aspi.restauranteapi.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class ReservaController {
         return ResponseEntity.ok(reservas);
     }
     @PostMapping("/reservas")
-    public ResponseEntity<Reserva> saveReserva(@RequestBody Reserva reserva, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<Reserva> saveReserva(@RequestBody ReservaDTOCliente reserva, @RequestHeader("Authorization") String token) {
+        System.out.println(reserva);
         return reservaService.save(reserva,token);
     }
     @PutMapping("/reservas/{id}")
