@@ -6,7 +6,8 @@ import jakarta.persistence.Entity;
 import java.time.LocalDate;
 
 public class ReservaDTO {
-    
+
+    private Long id;
     private String nombre;
     private String email;
     @JsonFormat(pattern = "dd-MM-yyyy")
@@ -14,6 +15,15 @@ public class ReservaDTO {
     private String numero_mesa;
 
     public ReservaDTO() {}
+
+    public ReservaDTO(Long id, String nombre, String email, LocalDate fecha, String numero_mesa) {
+        this.id = id;
+        this.nombre = nombre;
+        this.email = email;
+        this.fecha = fecha;
+        this.numero_mesa = numero_mesa;
+    }
+
     public ReservaDTO(String nombre, String email, LocalDate fecha, String numero_mesa) {
         this.nombre = nombre;
         this.email = email;
@@ -51,6 +61,14 @@ public class ReservaDTO {
 
     public void setNumero_mesa(String numero_mesa) {
         this.numero_mesa = numero_mesa;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
