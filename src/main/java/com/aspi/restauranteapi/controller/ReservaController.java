@@ -37,8 +37,8 @@ public class ReservaController {
         return reservaService.edit(id, reserva);
     }
     @DeleteMapping("/reservas/{id}")
-    public ResponseEntity<Reserva> deleteReserva(@PathVariable Long id) {
-        return reservaService.delete(id);
+    public ResponseEntity<Reserva> deleteReserva(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        return reservaService.delete(id,token);
     }
     @GetMapping("/reservas/{id}")
     public ResponseEntity<ReservaDTO> findById(@PathVariable Long id) {

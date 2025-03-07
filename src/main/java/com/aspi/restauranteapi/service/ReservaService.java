@@ -111,11 +111,17 @@ public class ReservaService {
             return ResponseEntity.notFound().build();
         }
     }
-    public ResponseEntity<Reserva> delete(Long id) {
+    public ResponseEntity<Reserva> delete(Long id, String token) {
+        String username = jwtTokenProvider.getUsernameFromToken(token.replace("Bearer ", ""));
         Optional<Reserva> reservaOptional = reservaRepository.findById(id);
         if (reservaOptional.isPresent()) {
-            reservaRepository.deleteById(id);
-            return ResponseEntity.ok(reservaOptional.get());
+            Reserva reserva = reservaOptional.get();
+            if(reserva.getCliente().getName().equals(username)) {
+                reservaRepository.deleteById(id);
+                return ResponseEntity.ok(reservaOptional.get());
+            }else{
+                return ResponseEntity.notFound().build();
+            }
         }else{
             return ResponseEntity.notFound().build();
         }
